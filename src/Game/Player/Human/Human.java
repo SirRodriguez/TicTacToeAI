@@ -59,4 +59,12 @@ public class Human implements Player{
         System.out.print(type.getType());
         System.out.println(" You Tied");
     }
+
+    public String getPlayerType(){
+        return "Human";
+    }
+
+    public Player getCopy(Mark mark){
+        return new Human(mark);
+    }
 }

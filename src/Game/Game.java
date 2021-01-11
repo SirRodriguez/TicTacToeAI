@@ -1,7 +1,10 @@
 package Game;
 
+import java.util.Scanner;
+
 import Board.Board;
 import Board.Mark.Mark;
+import Board.Mark.None.None;
 import Board.Mark.O.O;
 import Board.Mark.X.X;
 import Game.Player.Player;
@@ -13,14 +16,15 @@ public class Game {
     Player player2;
 
     private boolean turn; // True for player one turn, False for player two turn
+    private Player[] playerArray;
 
     public Game(){
         board = new Board();
-
-        // For now, 2 human players
-        player1 = new Human(new X());
-        player2 = new Human(new O());
         turn = true;
+        initializePlayerArray();
+
+        playerSelection();
+
     }
 
     public void runGame(){
@@ -61,5 +65,52 @@ public class Game {
 
         // Change the turn
         turn = !turn;
+    }
+
+    private void initializePlayerArray(){
+        playerArray = new Player[1];
+
+        playerArray[0] = new Human(new None());
+    }
+
+    private void showPlayerOptions(){
+        System.out.println("---Options---");
+        for(int i = 0; i < playerArray.length; ++i){
+            System.out.print("Option ");
+            System.out.print(i);
+            System.out.print(") ");
+
+            System.out.println(playerArray[i].getPlayerType());
+        }
+    }
+
+    private void playerSelection(){
+        Scanner input = new Scanner(System.in);
+
+        // Pick option for player 1
+        showPlayerOptions();
+        int choice = -1;
+        do {
+            try {
+                System.out.print("Choose player type for player 1/X: ");
+                choice = input.nextInt();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } while (choice < 0 || choice >= playerArray.length);
+        player1 = playerArray[choice].getCopy( new X() );
+
+        // Pick option for player 2
+        showPlayerOptions();
+        choice = -1;
+        do {
+            try {
+                System.out.print("Choose player type for player 2/O: ");
+                choice = input.nextInt();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } while (choice < 0 || choice >= playerArray.length);
+        player2 = playerArray[choice].getCopy( new O() );
     }
 }
