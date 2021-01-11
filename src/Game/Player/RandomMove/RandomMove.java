@@ -31,14 +31,26 @@ public class RandomMove implements Player{
         System.out.println(" Won!");
     }
 
+    public void giveWinQuiet(){
+        // Pass
+    }
+
     public void giveLose(){
         System.out.print(type.getType());
         System.out.println(" Lost!");
     }
 
+    public void giveLoseQuiet(){
+        // Pass
+    }
+
     public void giveTie(){
         System.out.print(type.getType());
         System.out.println(" Tied!");
+    }
+
+    public void giveTieQuiet(){
+        // Pass
     }
 
     public String getPlayerType(){

@@ -49,15 +49,27 @@ public class Human implements Player{
         System.out.println(" You Won!!");
     }
 
+    public void giveWinQuiet(){
+        // Pass
+    }
+
     public void giveLose(){
         System.out.print("Sorry ");
         System.out.print(type.getType());
         System.out.println(" You Lose...");
     }
 
+    public void giveLoseQuiet(){
+        // Pass
+    }
+
     public void giveTie(){
         System.out.print(type.getType());
         System.out.println(" You Tied");
+    }
+
+    public void giveTieQuiet(){
+        // Pass
     }
 
     public String getPlayerType(){

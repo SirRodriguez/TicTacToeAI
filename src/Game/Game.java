@@ -28,6 +28,14 @@ public class Game {
 
     }
 
+    public Game(Player p1, Player p2){
+        board = new Board();
+        turn = true;
+
+        player1 = p1;
+        player2 = p2;
+    }
+
     public void runGame(){
         // loop while game is not done yet
         while(!board.isDone()){
@@ -39,6 +47,7 @@ public class Game {
         // Find which player won
         Mark winnerMark = board.getWinningMark();
 
+        // Give the players actions for winning or losing
         if(winnerMark.isSame( new X() )){
             player1.giveWin();
             player2.giveLose();
@@ -51,16 +60,70 @@ public class Game {
         }
     }
 
+    // This is to run the game a number of times
+    public void runGame(int iterations){
+        // Initialize counts
+        int p1WInCount = 0;
+        int p1LoseCount = 0;
+        int p2WinCount = 0;
+        int p2LoseCount = 0;
+        int tieCount = 0;
+
+        // Run iterations
+        for(int i = 0; i < iterations; ++i){
+            // Run the game loop
+            while(!board.isDone()){
+                makeTurn();
+            }
+
+            // Find which player won
+            Mark winnerMark = board.getWinningMark();
+
+            // Give the players actions for winning or losing
+            if(winnerMark.isSame( new X() )){
+                player1.giveWinQuiet();
+                player2.giveLoseQuiet();
+
+                // record the win or lose
+                ++p1WInCount;
+                ++p2LoseCount;
+            }else if(winnerMark.isSame( new O())){
+                player2.giveWinQuiet();
+                player1.giveLoseQuiet();
+
+                // record the win or lose
+                ++p2WinCount;
+                ++p1LoseCount;
+            }else{
+                player1.giveTieQuiet();
+                player2.giveTieQuiet();
+
+                // record the tie
+                ++tieCount;
+            }
+
+            // Restart the game
+            board.reset();
+        }
+
+        // Print out counts
+        System.out.printf("Player 1/X Win Count: %d%n", p1WInCount);
+        // System.out.printf("Player 1/X Lose Count: %d%n", p1LoseCount);
+        System.out.printf("Player 2/O Win Count: %d%n", p2WinCount);
+        // System.out.printf("Player 2/O Lose Count: %d%n", p2LoseCount);
+        System.out.printf("Tie Count: %d%n", tieCount);
+    }
+
     // Private methods
 
     private void makeTurn(){
         // player 1
         if(turn){
-            System.out.println("Player 1 turn");
+            // System.out.println("Player 1 turn");
             player1.makeTurn(board);
         // Player 2
         }else{
-            System.out.println("Player 2 turn");
+            // System.out.println("Player 2 turn");
             player2.makeTurn(board);
         }
 

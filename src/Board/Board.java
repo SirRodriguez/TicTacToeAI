@@ -9,11 +9,7 @@ public class Board {
     public Board(){
         // Initialize the board state
         boardState = new Mark[3][3];
-        for(int i = 0; i < 3; ++i){
-            for(int j = 0; j < 3; ++j){
-                boardState[i][j] = new None();
-            }
-        }
+        resetBoard();
     }
 
     public void printState(){
@@ -127,7 +123,19 @@ public class Board {
         return avilMoves;
     }
 
+    public void reset(){
+        resetBoard();
+    }
+
     // Private methods
+
+    private void resetBoard(){
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                boardState[i][j] = new None();
+            }
+        }
+    }
 
     private boolean rowHaveThreeInRow(){
         // For each row it checks if it is not none and they are all the same

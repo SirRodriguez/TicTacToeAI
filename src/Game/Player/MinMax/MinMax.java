@@ -19,11 +19,23 @@ public class MinMax implements Player{
         // TODO
     }
 
+    public void giveWinQuiet(){
+        // TODO
+    }
+
     public void giveLose(){
         // TODO
     }
 
+    public void giveLoseQuiet(){
+        // TODO
+    }
+
     public void giveTie(){
+        // TODO
+    }
+
+    public void giveTieQuiet(){
         // TODO
     }
 
