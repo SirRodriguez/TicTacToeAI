@@ -1,8 +1,8 @@
-import Board.Board;
+import Game.Game;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Board board = new Board();
-        board.printState();
+        Game game = new Game();
+        game.runGame();
     }
 }
