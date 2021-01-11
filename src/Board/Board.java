@@ -87,6 +87,32 @@ public class Board {
         boardState[i][j] = mark.getCopy();
     }
 
+    // Mark of None if it is a tie
+    public Mark getWinningMark(){
+        Mark winner;
+
+        // Check the rows
+        winner = getRowWinner();
+        if(winner.isNotNone()){
+            return winner;
+        }
+
+        // Check columns
+        winner = getColWinner();
+        if(winner.isNotNone()){
+            return winner;
+        }
+
+        // Check diagonals
+        winner = getDiagWinner();
+        if(winner.isNotNone()){
+            return winner;
+        }
+
+        // No winner
+        return new None();
+    }
+
     // Private methods
 
     private boolean rowHaveThreeInRow(){
@@ -104,6 +130,21 @@ public class Board {
         return false;
     }
 
+    private Mark getRowWinner(){
+        // For each row it checks if it is not none and they are all the same
+        for(int i = 0; i < 3; ++i){
+            if(
+                boardState[i][0].isNotNone() &&
+                boardState[i][0].isSame(boardState[i][1]) && 
+                boardState[i][1].isSame(boardState[i][2])
+            ){
+                return boardState[i][0].getCopy();
+            }
+        }
+
+        return new None();
+    }
+
     private boolean colHaveThreeInRow(){
         // For each column it checks if it is not none and they are all the same
         for(int j = 0; j < 3; ++j){
@@ -117,6 +158,21 @@ public class Board {
         }
 
         return false;
+    }
+
+    private Mark getColWinner(){
+        // For each column it checks if it is not none and they are all the same
+        for(int j = 0; j < 3; ++j){
+            if(
+                boardState[0][j].isNotNone() &&
+                boardState[0][j].isSame(boardState[1][j]) &&
+                boardState[1][j].isSame(boardState[2][j])
+            ){
+                return boardState[0][j].getCopy();
+            }
+        }
+
+        return new None();
     }
 
     private boolean diaHaveThreeInRow(){
@@ -142,6 +198,31 @@ public class Board {
         }
 
         return false;
+    }
+
+    private Mark getDiagWinner(){
+        // if center is None, its false
+        if(!boardState[1][1].isNotNone()){
+            return new None();
+        }
+
+        // Check the top left to bottom right diagonal
+        if(
+            boardState[0][0].isSame(boardState[1][1]) &&
+            boardState[2][2].isSame(boardState[1][1])
+        ){
+            return boardState[1][1].getCopy();
+        }
+
+        // Check the top right to bottom left diagonal
+        if(
+            boardState[0][2].isSame(boardState[1][1]) &&
+            boardState[2][0].isSame(boardState[1][1])
+        ){
+            return boardState[1][1].getCopy();
+        }
+
+        return new None();
     }
 
     private boolean isBoardFull(){

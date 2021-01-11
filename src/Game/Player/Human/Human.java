@@ -42,4 +42,21 @@ public class Human implements Player{
         // Make the coice on the board
         board.changeSpace(type, choice);
     }
+
+    public void giveWin(){
+        System.out.print("Good Job ");
+        System.out.print(type.getType());
+        System.out.println(" You Won!!");
+    }
+
+    public void giveLose(){
+        System.out.print("Sorry ");
+        System.out.print(type.getType());
+        System.out.println(" You Lose...");
+    }
+
+    public void giveTie(){
+        System.out.print(type.getType());
+        System.out.println(" You Tied");
+    }
 }

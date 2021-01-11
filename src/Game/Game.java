@@ -1,6 +1,7 @@
 package Game;
 
 import Board.Board;
+import Board.Mark.Mark;
 import Board.Mark.O.O;
 import Board.Mark.X.X;
 import Game.Player.Player;
@@ -29,6 +30,20 @@ public class Game {
         }
 
         board.printState();
+
+        // Find which player won
+        Mark winnerMark = board.getWinningMark();
+
+        if(winnerMark.isSame( new X() )){
+            player1.giveWin();
+            player2.giveLose();
+        }else if(winnerMark.isSame( new O())){
+            player2.giveWin();
+            player1.giveLose();
+        }else{
+            player1.giveTie();
+            player2.giveTie();
+        }
     }
 
     // Private methods
