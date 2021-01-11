@@ -9,6 +9,7 @@ import Board.Mark.O.O;
 import Board.Mark.X.X;
 import Game.Player.Player;
 import Game.Player.Human.Human;
+import Game.Player.RandomMove.RandomMove;
 
 public class Game {
     Board board;
@@ -68,9 +69,10 @@ public class Game {
     }
 
     private void initializePlayerArray(){
-        playerArray = new Player[1];
+        playerArray = new Player[2];
 
         playerArray[0] = new Human(new None());
+        playerArray[1] = new RandomMove(new None());
     }
 
     private void showPlayerOptions(){

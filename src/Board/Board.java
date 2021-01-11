@@ -18,28 +18,30 @@ public class Board {
 
     public void printState(){
         for(int i = 0; i < 3; ++i){
-            System.out.println("-------");
+            System.out.println("--------------");
             System.out.print("|");
             for(int j = 0; j < 3; ++j){
-                System.out.print(boardState[i][j].getType());
+                System.out.print(' ' + boardState[i][j].getType() + ' ');
                 System.out.print('|');
             }
             System.out.println("");
         }
-        System.out.println("-------");
+        System.out.println("--------------");
     }
 
     public void showNumOption(){
         for(int i = 0; i < 3; ++i){
-            System.out.println("-------");
+            System.out.println("--------------");
             System.out.print("|");
             for(int j = 0; j < 3; ++j){
+                System.out.print(' ');
                 System.out.print(i*3+j);
+                System.out.print(' ');
                 System.out.print('|');
             }
             System.out.println("");
         }
-        System.out.println("-------");
+        System.out.println("--------------");
     }
 
     public boolean isDone(){
@@ -111,6 +113,18 @@ public class Board {
 
         // No winner
         return new None();
+    }
+
+    public int getNumAvailableMoves(){
+        int avilMoves = 0;
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                if(!boardState[i][j].isNotNone()){
+                    ++avilMoves;
+                }
+            }
+        }
+        return avilMoves;
     }
 
     // Private methods
