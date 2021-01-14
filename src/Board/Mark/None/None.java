@@ -24,4 +24,8 @@ public class None implements Mark{
     public Mark getCopy(){
         return new None();
     }
+
+    public Mark makeOpponentMark(){
+        return new None();
+    }
 }

@@ -9,6 +9,7 @@ import Board.Mark.O.O;
 import Board.Mark.X.X;
 import Game.Player.Player;
 import Game.Player.Human.Human;
+import Game.Player.MinMax.MinMax;
 import Game.Player.RandomMove.RandomMove;
 
 public class Game {
@@ -36,7 +37,7 @@ public class Game {
         player2 = p2;
     }
 
-    public void runGame(){
+    public void runGame() throws Exception{
         // loop while game is not done yet
         while(!board.isDone()){
             makeTurn();
@@ -61,7 +62,7 @@ public class Game {
     }
 
     // This is to run the game a number of times
-    public void runGame(int iterations){
+    public void runGame(int iterations) throws Exception{
         // Initialize counts
         int p1WInCount = 0;
         int p1LoseCount = 0;
@@ -116,7 +117,7 @@ public class Game {
 
     // Private methods
 
-    private void makeTurn(){
+    private void makeTurn() throws Exception{
         // player 1
         if(turn){
             // System.out.println("Player 1 turn");
@@ -132,10 +133,11 @@ public class Game {
     }
 
     private void initializePlayerArray(){
-        playerArray = new Player[2];
+        playerArray = new Player[3];
 
         playerArray[0] = new Human(new None());
         playerArray[1] = new RandomMove(new None());
+        playerArray[2] = new MinMax(new None());
     }
 
     private void showPlayerOptions(){

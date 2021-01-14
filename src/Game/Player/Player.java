@@ -4,7 +4,7 @@ import Board.Board;
 import Board.Mark.Mark;
 
 public interface Player {
-    public void makeTurn(Board board);
+    public void makeTurn(Board board) throws Exception;
     public void giveWin();
     public void giveWinQuiet();
     public void giveLose();

@@ -5,11 +5,37 @@ import Board.Mark.None.None;
 
 public class Board {
     Mark[][] boardState;
+    int[] moveHistory;
+    int movesMade;
 
     public Board(){
         // Initialize the board state
         boardState = new Mark[3][3];
         resetBoard();
+
+        // Initialize board history
+        moveHistory = new int[9];
+        resetMoveHistory();
+
+        movesMade = 0;
+    }
+
+    public Board(Board otherBoard){
+        boardState = new Mark[3][3];
+        // Copy each of the marks of other boardState to this one
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                boardState[i][j] = otherBoard.boardState[i][j].getCopy();
+            }
+        }
+
+        moveHistory = new int[9];
+        // copy the move history over
+        for(int i = 0; i < 9; ++i){
+            moveHistory[i] = otherBoard.moveHistory[i];
+        }
+
+        movesMade = 0;
     }
 
     public void printState(){
@@ -74,7 +100,7 @@ public class Board {
         return !boardState[i][j].isNotNone();
     }
 
-    public void changeSpace(Mark mark, int spot){
+    public void makeMove(Mark mark, int spot) throws Exception{
         // If it is out of bounds
         if(spot < 0 || spot > 8){
             return;
@@ -82,7 +108,26 @@ public class Board {
 
         int i = spot / 3;
         int j = spot % 3;
-        boardState[i][j] = mark.getCopy();
+        if(!boardState[i][j].isNotNone()){
+            // Mark it on the board
+            boardState[i][j] = mark.getCopy();
+
+            // Mark it on history
+            moveHistory[movesMade] = spot;
+            ++movesMade;
+        }else{
+            throw new Exception("Move was made on an occupied space");
+        }
+    }
+
+    public void undoMove(){
+        // Decriment moves made
+        --movesMade;
+
+        // Remove the move from the board
+        int i = moveHistory[movesMade] / 3;
+        int j = moveHistory[movesMade] % 3;
+        boardState[i][j] = new None();
     }
 
     // Mark of None if it is a tie
@@ -112,19 +157,23 @@ public class Board {
     }
 
     public int getNumAvailableMoves(){
-        int avilMoves = 0;
-        for(int i = 0; i < 3; ++i){
-            for(int j = 0; j < 3; ++j){
-                if(!boardState[i][j].isNotNone()){
-                    ++avilMoves;
-                }
-            }
-        }
-        return avilMoves;
+        // int avilMoves = 0;
+        // for(int i = 0; i < 3; ++i){
+        //     for(int j = 0; j < 3; ++j){
+        //         if(!boardState[i][j].isNotNone()){
+        //             ++avilMoves;
+        //         }
+        //     }
+        // }
+        // return avilMoves;
+
+        return 9 - movesMade;
     }
 
     public void reset(){
         resetBoard();
+        resetMoveHistory();
+        movesMade = 0;
     }
 
     // Private methods
@@ -134,6 +183,12 @@ public class Board {
             for(int j = 0; j < 3; ++j){
                 boardState[i][j] = new None();
             }
+        }
+    }
+
+    private void resetMoveHistory(){
+        for(int i = 0; i < 9; ++i){
+            moveHistory[i] = 0;
         }
     }
 
@@ -248,15 +303,17 @@ public class Board {
     }
 
     private boolean isBoardFull(){
-        // Check if all the spaces are not None
-        for(int i = 0; i < 3; ++i){
-            for(int j = 0; j < 3; ++j){
-                if(!boardState[i][j].isNotNone()){
-                    return false;
-                }
-            }
-        }
+        // // Check if all the spaces are not None
+        // for(int i = 0; i < 3; ++i){
+        //     for(int j = 0; j < 3; ++j){
+        //         if(!boardState[i][j].isNotNone()){
+        //             return false;
+        //         }
+        //     }
+        // }
 
-        return true;
+        // return true;
+
+        return movesMade >= 9;
     }
 }

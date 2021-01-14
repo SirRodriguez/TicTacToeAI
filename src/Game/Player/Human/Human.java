@@ -13,7 +13,7 @@ public class Human implements Player{
         type = mark;
     }
 
-    public void makeTurn(Board board){
+    public void makeTurn(Board board) throws Exception{
         // Show type of the player
         System.out.print("Type: ");
         System.out.println(type.getType());
@@ -40,7 +40,7 @@ public class Human implements Player{
         // scan.close();
 
         // Make the coice on the board
-        board.changeSpace(type, choice);
+        board.makeMove(type, choice);
     }
 
     public void giveWin(){

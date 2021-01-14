@@ -1,6 +1,7 @@
 package Board.Mark.O;
 
 import Board.Mark.Mark;
+import Board.Mark.X.X;
 
 public class O implements Mark{
     String type;
@@ -23,5 +24,9 @@ public class O implements Mark{
 
     public Mark getCopy(){
         return new O();
+    }
+
+    public Mark makeOpponentMark(){
+        return new X();
     }
 }

@@ -13,17 +13,16 @@ public class RandomMove implements Player{
         type = mark;
     }
 
-    public void makeTurn(Board board){
+    public void makeTurn(Board board) throws Exception{
         // get a random move
-        // int numRemainingMoves = board.getNumAvailableMoves();
         Random randGen = new Random();
-        int randMove; // = randGen.nextInt(9);
+        int randMove;
         do{
             randMove = randGen.nextInt(9);
         }while(!board.isSpotEmpty(randMove));
 
         // Make the choice on the board
-        board.changeSpace(type, randMove);
+        board.makeMove(type, randMove);
     }
 
     public void giveWin(){

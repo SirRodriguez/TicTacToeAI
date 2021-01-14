@@ -5,4 +5,5 @@ public interface Mark {
     public boolean isNotNone();
     public boolean isSame(Mark mark);
     public Mark getCopy();
+    public Mark makeOpponentMark();
 }
