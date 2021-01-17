@@ -8,13 +8,13 @@ import Game.Player.RandomMove.RandomMove;
 public class App {
     public static void main(String[] args) throws Exception {
         // Default game
-        // Game game = new Game();
+        Game game = new Game();
 
         // Run random AI's against each other
         // Game game = new Game(new RandomMove(new X()), new RandomMove(new O()));
 
         // Run MinMax against random as first
-        Game game = new Game(new MinMax(new X()), new RandomMove(new O()));
+        // Game game = new Game(new MinMax(new X()), new RandomMove(new O()));
 
         // Run MinMax against random as Second
         // Game game = new Game(new RandomMove(new X()), new MinMax(new O()));
@@ -23,10 +23,10 @@ public class App {
         // Game game = new Game(new MinMax(new X()), new MinMax(new O()));
 
         // Default Single run
-        // game.runGame();
+        game.runGame();
 
         // Run a number of times
-        game.runGame(500);
+        // game.runGame(500);
 
 
         // Test Board
