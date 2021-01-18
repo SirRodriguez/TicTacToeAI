@@ -1,14 +1,19 @@
+import java.io.File;
+import java.io.FileReader;
+
 import Board.Board;
+import Board.Mark.None.None;
 import Board.Mark.O.O;
 import Board.Mark.X.X;
 import Game.Game;
+import Game.Player.Memory.Memory;
 import Game.Player.MinMax.MinMax;
 import Game.Player.RandomMove.RandomMove;
 
 public class App {
     public static void main(String[] args) throws Exception {
         // Default game
-        Game game = new Game();
+        // Game game = new Game();
 
         // Run random AI's against each other
         // Game game = new Game(new RandomMove(new X()), new RandomMove(new O()));
@@ -23,7 +28,7 @@ public class App {
         // Game game = new Game(new MinMax(new X()), new MinMax(new O()));
 
         // Default Single run
-        game.runGame();
+        // game.runGame();
 
         // Run a number of times
         // game.runGame(500);
@@ -46,6 +51,32 @@ public class App {
         // board.undoMove();
 
         // board.printState();
+
+        // String fileMemoryName = "src\\Game\\Player\\Memory\\FileMemory.txt";
+        // File fileMemory = new File(fileMemoryName);
+
+        // if(fileMemory.createNewFile()){
+        //     System.out.println("File created: " + fileMemory.getName());
+        // }else{
+        //     System.out.println("File already exists.");
+        // }
+
+        // // Iterate through the file and get all the data from it
+        // FileReader fileMemoryReader = null;
+        // try {
+        //     fileMemoryReader = new FileReader(fileMemoryName);
+        // } catch (Exception e) {
+        //     System.out.println(e);
+        //     System.exit(1);
+        // }
+
+        // int ch;
+        // while((ch=fileMemoryReader.read()) != -1){
+        //     System.out.print((char) ch);
+        // }
+
+        Memory mem = new Memory(new None());
+        mem.printMem();
 
     }
 }

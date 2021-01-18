@@ -176,6 +176,12 @@ public class Board {
         movesMade = 0;
     }
 
+    public void copyMoveHistoryOver(int[] otherMoveHistory){
+        for(int i = 0; i < 9; ++i){
+            otherMoveHistory[i] = moveHistory[i];
+        }
+    }
+
     // Private methods
 
     private void resetBoard(){
