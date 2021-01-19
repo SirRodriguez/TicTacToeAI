@@ -9,6 +9,7 @@ import Board.Mark.O.O;
 import Board.Mark.X.X;
 import Game.Player.Player;
 import Game.Player.Human.Human;
+import Game.Player.Memory.Memory;
 import Game.Player.MinMax.MinMax;
 import Game.Player.RandomMove.RandomMove;
 
@@ -133,11 +134,12 @@ public class Game {
     }
 
     private void initializePlayerArray(){
-        playerArray = new Player[3];
+        playerArray = new Player[4];
 
         playerArray[0] = new Human(new None());
         playerArray[1] = new RandomMove(new None());
         playerArray[2] = new MinMax(new None());
+        playerArray[3] = new Memory(new None());
     }
 
     private void showPlayerOptions(){

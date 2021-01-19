@@ -21,6 +21,10 @@ public class None implements Mark{
         return mark.getType().equals(getType());
     }
 
+    public boolean isOpposing(Mark mark){
+        return mark.isSame(makeOpponentMark());
+    }
+
     public Mark getCopy(){
         return new None();
     }

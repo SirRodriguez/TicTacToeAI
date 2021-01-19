@@ -157,16 +157,6 @@ public class Board {
     }
 
     public int getNumAvailableMoves(){
-        // int avilMoves = 0;
-        // for(int i = 0; i < 3; ++i){
-        //     for(int j = 0; j < 3; ++j){
-        //         if(!boardState[i][j].isNotNone()){
-        //             ++avilMoves;
-        //         }
-        //     }
-        // }
-        // return avilMoves;
-
         return 9 - movesMade;
     }
 
@@ -179,6 +169,27 @@ public class Board {
     public void copyMoveHistoryOver(int[] otherMoveHistory){
         for(int i = 0; i < 9; ++i){
             otherMoveHistory[i] = moveHistory[i];
+        }
+    }
+
+    public Mark getMarkOnSpot(int i, int j){
+        return boardState[i][j];
+    }
+
+    // Mark[][] boardState;
+    // int[] moveHistory;
+    // int movesMade;
+    public void copyFrom(Board otherBoard){
+        movesMade = otherBoard.movesMade;
+
+        for(int i = 0; i < 9; ++i){
+            moveHistory[i] = otherBoard.moveHistory[i];
+        }
+
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                boardState[i][j] = otherBoard.getMarkOnSpot(i, j).getCopy();
+            }
         }
     }
 
@@ -309,17 +320,6 @@ public class Board {
     }
 
     private boolean isBoardFull(){
-        // // Check if all the spaces are not None
-        // for(int i = 0; i < 3; ++i){
-        //     for(int j = 0; j < 3; ++j){
-        //         if(!boardState[i][j].isNotNone()){
-        //             return false;
-        //         }
-        //     }
-        // }
-
-        // return true;
-
         return movesMade >= 9;
     }
 }

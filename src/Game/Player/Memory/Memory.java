@@ -3,9 +3,12 @@ package Game.Player.Memory;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Board.Board;
 import Board.Mark.Mark;
+import Board.Mark.O.O;
+import Board.Mark.X.X;
 import Game.Player.Player;
 
 public class Memory implements Player{
@@ -19,14 +22,23 @@ public class Memory implements Player{
     ArrayList<Integer[][]>[] boardStateMemories;
 
     // History of the board
+    Mark[][] boardState;
     int[] moveHistory;
     int movesMade;
+
+    Board copyBoard;
 
     public Memory(Mark mark){
         type = mark;
 
+        // Initialize boardState
+        boardState = new Mark[3][3];
+
         // Initialize Move history
         moveHistory = new int[9];
+
+        // Initialize copy board
+        copyBoard = new Board();
 
         // Load memory
         loadMemory();
@@ -38,14 +50,91 @@ public class Memory implements Player{
     // Losing:  1
     // Tie:     2
     // Unknown: 3
-    // X:       4
-    // O:       5
+    // Self mark:4
+    // Opposing mark:5
     // Whether the player is X or O, the reference will be changed to the point of view as X
     public void makeTurn(Board board) throws Exception{
         // Copy Board History
-        copyBoardHistory(board);
+        // copyBoardHistory(board);
+        copyBoard.copyFrom(board);
 
         // Get board state and check if it is in memory
+        Integer[][] boardStateMoves = getBoardStateFromMem(board);
+
+        // --- Analyze and make a move
+
+        // Create the arrays for holding moves spots
+        ArrayList<Integer> winning = new ArrayList();
+        ArrayList<Integer> losing = new ArrayList();
+        ArrayList<Integer> tie = new ArrayList();
+        ArrayList<Integer> unknown = new ArrayList();
+        ArrayList<Integer> x = new ArrayList();
+        ArrayList<Integer> o = new ArrayList();
+
+        // Add the spots to the corresponding lists
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                int spot = i*3+j;
+                switch (boardStateMoves[i][j]) {
+                    case 0:
+                        winning.add(spot);
+                        break;
+                    
+                    case 1:
+                        losing.add(spot);
+                        break;
+
+                    case 2:
+                        tie.add(spot);
+                        break;
+
+                    case 3:
+                        unknown.add(spot);
+                        break;
+
+                    case 4:
+                        x.add(spot);
+                        break;
+
+                    case 5:
+                        o.add(spot);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        Random randGen = new Random();
+
+        // Unknown spots will be picked first in order to learn new plays
+        if(!unknown.isEmpty()){
+            // Pick a random spot on the board
+            int randMove = randGen.nextInt(unknown.size());
+            board.makeMove(type, unknown.get(randMove));
+            copyBoard.makeMove(type, unknown.get(randMove));
+
+        // Then pick winning moves
+        }else if(!winning.isEmpty()){
+            int randMove = randGen.nextInt(winning.size());
+            board.makeMove(type, winning.get(randMove));
+            copyBoard.makeMove(type, winning.get(randMove));
+
+        // Then pick tie moves
+        }else if(!tie.isEmpty()){
+            int randMove = randGen.nextInt(tie.size());
+            board.makeMove(type, tie.get(randMove));
+            copyBoard.makeMove(type, tie.get(randMove));
+
+        // Then pick remaining losing moves
+        }else if(!losing.isEmpty()){
+            int randMove = randGen.nextInt(losing.size());
+            board.makeMove(type, losing.get(randMove));
+            copyBoard.makeMove(type, losing.get(randMove));
+
+        }else{
+            throw new Exception("No available moves exist for Memory player");
+        }
         
     }
 
@@ -171,7 +260,89 @@ public class Memory implements Player{
     private void copyBoardHistory(Board board){
         movesMade = 9 - board.getNumAvailableMoves();
         board.copyMoveHistoryOver(moveHistory);
+        copyBoardState(board);
     }
 
-    
+    private void copyBoardState(Board board){
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                boardState[i][j] = board.getMarkOnSpot(i, j).getCopy();
+            }
+        }
+    }
+
+    // ArrayList<Integer[][]>[] boardStateMemories;
+    // returns board state from memory and creates a new one if none exists
+    private Integer[][] getBoardStateFromMem(Board board){
+        // Look through all the board states with the same moves
+        // as board to find the one with the state
+        int numMoves = 9 - board.getNumAvailableMoves();
+        for(int i = 0; i < boardStateMemories[numMoves].size(); ++i){
+            if(hasSameBoardState(board, boardStateMemories[numMoves].get(i))){
+                return boardStateMemories[numMoves].get(i);
+            }
+        }
+
+        // If not in memory
+        // create a new one and add it to memory
+        return createNewBoardMem(board);
+    }
+
+    private boolean hasSameBoardState(Board board, Integer[][] boardStateMem){
+        // Look through all spots and check if they are the same
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                if(!sameMarkWithMem(board.getMarkOnSpot(i,j), boardStateMem[i][j])){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // There will be a code for the spots in the board
+    // And their likley hood of winning, losing, etc.
+    // Winning: 0
+    // Losing:  1
+    // Tie:     2
+    // Unknown: 3
+    // Self mark:4
+    // Opposing mark:5
+    // Whether the player is X or O, the reference will be changed to the point of view as X
+    private boolean sameMarkWithMem(Mark mark, int memCode){
+        if(mark.isSame(type) && memCode == 4){
+            return true;
+        }else if(mark.isOpposing(type) && memCode == 5){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    // ArrayList<Integer[][]>[] boardStateMemories;
+    private Integer[][] createNewBoardMem(Board board){
+        Integer[][] boardMem = new Integer[3][3];
+
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                // If the spot is same
+                if(board.getMarkOnSpot(i, j).isSame(type)){
+                    boardMem[i][j] = 4;
+                // If spot is opposing
+                }else if(board.getMarkOnSpot(i, j).isOpposing(type)){
+                    boardMem[i][j] = 5;
+                // If it is None
+                }else{
+                    boardMem[i][j] = 3;
+                }
+            }
+        }
+
+        // Add it to memory
+        int numMoves = 9 - board.getNumAvailableMoves();
+        boardStateMemories[numMoves].add(boardMem);
+
+        return boardMem;
+    }
 }

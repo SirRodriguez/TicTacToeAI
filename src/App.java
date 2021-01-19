@@ -13,7 +13,7 @@ import Game.Player.RandomMove.RandomMove;
 public class App {
     public static void main(String[] args) throws Exception {
         // Default game
-        // Game game = new Game();
+        Game game = new Game();
 
         // Run random AI's against each other
         // Game game = new Game(new RandomMove(new X()), new RandomMove(new O()));
@@ -28,7 +28,7 @@ public class App {
         // Game game = new Game(new MinMax(new X()), new MinMax(new O()));
 
         // Default Single run
-        // game.runGame();
+        game.runGame();
 
         // Run a number of times
         // game.runGame(500);
@@ -75,8 +75,8 @@ public class App {
         //     System.out.print((char) ch);
         // }
 
-        Memory mem = new Memory(new None());
-        mem.printMem();
+        // Memory mem = new Memory(new None());
+        // mem.printMem();
 
     }
 }
